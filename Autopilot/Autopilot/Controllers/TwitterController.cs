@@ -20,6 +20,25 @@ namespace Autopilot.Controllers
         }
 
         // GET: /SocialMedia/
-       
+        public IHttpActionResult TwitterAuth()
+        {
+            var URI = _twitterService.Authorize();
+            return new RedirectResult(URI, false /*permanent*/);
+
+        }
+
+        public IHttpActionResult Reconnect()
+        {
+            try
+            {
+                return RedirectToAction("TwitterAuth");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
