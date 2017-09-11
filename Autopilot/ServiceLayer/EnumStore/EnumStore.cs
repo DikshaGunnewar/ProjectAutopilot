@@ -6,18 +6,14 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.EnumStore
 {
-    class EnumStore
+    public class EnumStore
     {
     }
     public enum SocialMediaProviders
     {
-        Twitter,
-        LinkedIn,
-        Instagram,
-        Pinterest,
-        SoundClound,
-        Spotify,
-        Deezer
+        Twitter,   
+        Instagram
+       
     }
     public enum Activity
     {
@@ -27,12 +23,5 @@ namespace ServiceLayer.EnumStore
         PinIt
     }
 
-    public enum SpotifySearchType
-    {
-        artist,
-        user,
-        playlist,
-        track
-
-    }
+  
 }

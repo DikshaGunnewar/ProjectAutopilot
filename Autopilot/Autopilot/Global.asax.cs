@@ -3,6 +3,7 @@ using Autofac.Integration.WebApi;
 using RepositoryLayer.Infrastructure;
 using RepositoryLayer.Repository;
 using ServiceLayer;
+using ServiceLayer.Interfaces;
 using ServiceLayer.Services;
 using System;
 using System.Collections.Generic;
@@ -40,15 +41,15 @@ namespace Autopilot
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerRequest();
 
 
+            //to register  a servies and their interfaces by diksha date-11/2017
+            builder.RegisterType<UserService>().As<IUserService>().InstancePerRequest();
+            builder.RegisterType<TwitterServices>().As<ITwitterServices>().InstancePerRequest();
 
 
+            // Register your repositories all at once using assembly scanning  by diksha temporary trial 
 
-            //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
-
-
-            // Register your repositories all at once using assembly scanning      
-            builder.RegisterAssemblyTypes(typeof(UserService).Assembly).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerRequest();
-            builder.RegisterAssemblyTypes(typeof(TwitterServices).Assembly).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerRequest();
+            //builder.RegisterAssemblyTypes(typeof(UserService).Assembly).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerRequest();
+            //builder.RegisterAssemblyTypes(typeof(TwitterServices).Assembly).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerRequest();
 
 
             // Register your Web API controllers all at once using assembly scanning

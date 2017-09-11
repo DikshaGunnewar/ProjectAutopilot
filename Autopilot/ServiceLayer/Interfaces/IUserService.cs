@@ -10,7 +10,9 @@ namespace ServiceLayer.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<BusinessCategory> GetBusinessCategory();
-       
+      
+        IEnumerable<SocialMediaVM> GetUsersAllAccounts(string userId);
+      
+
     }
 }

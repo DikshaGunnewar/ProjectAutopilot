@@ -1,4 +1,5 @@
-﻿using ServiceLayer.Interfaces;
+﻿using Microsoft.AspNet.Identity;
+using ServiceLayer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,35 @@ namespace Autopilot.Controllers
             _userService = userService;
         }
 
-      
+        // GET: /SocialMedia/
+        public IHttpActionResult TwitterAuth()
+        {
+            var URI = _twitterService.Authorize();
+            return Redirect(URI);
+
+        }
+
+        public IHttpActionResult Reconnect()
+        {
+            try
+            {
+                return Redirect("TwitterAuth");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public IHttpActionResult TwitterAuthCallback(string oauth_token, string oauth_verifier)
+        {
+            var tokens = _twitterService.GetTokensOAuth(oauth_token, oauth_verifier);
+            var response = _twitterService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);
+            //return RedirectToAction("Dashboard", "Users", new { Message = response });
+            return Ok(response);
+   
+        }
 
     }
 }

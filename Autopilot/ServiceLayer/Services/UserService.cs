@@ -3,6 +3,7 @@ using EntitiesLayer.ViewModels;
 using RepositoryLayer.Infrastructure;
 using RepositoryLayer.Repository;
 using ServiceLayer.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,65 +13,59 @@ namespace ServiceLayer.Services
     {
 
         #region Initialization
-        private readonly IRepository<BusinessCategory> _businessCategory;
-        private readonly IRepository<SocialMedia> _socialMediaRepo;
-        private readonly IRepository<SubscriptionsPlan> _subscriptionPlanRepo;
-        private readonly IRepository<OrderDetails> _orderDetailsRepo;
+
+        private readonly IRepository<SocialMedia> _socialMediaRepo;     
         private readonly IRepository<UserAccountSubscription> _accountSubscriptionRepo;
-
-        private readonly IRepository<Languages> _languageRepo;
-        private readonly IRepository<Tags> _tagRepo;
-        private readonly IRepository<Activities> _activityRepo;
-        private readonly IRepository<Conversions> _conversionRepo;
-        private readonly IRepository<SuperTargetUser> _superTargetUserRepo;
-        private readonly IRepository<UserManagement> _userManagementRepo;
-        private readonly IRepository<FollowersGraph> _followersGraphRepo;
-        private readonly IRepository<UserBillingAddress> _userBillingAddressRepo;
-
+        private readonly IRepository<UserManagement> _userManagementRepo;  
         private readonly IUnitOfWork _unitOfWork;
 
 
-        public UserService(IRepository<BusinessCategory> businessCategory,
-           IUnitOfWork unitOfWork,
-           IRepository<SocialMedia> socialMedia,
-           IRepository<Languages> languages,
-           IRepository<Activities> activityRepo,
-           IRepository<Conversions> conversionRepo,
-           IRepository<UserManagement> userManagementRepo,
-           IRepository<SuperTargetUser> superTargetUserRepo,
-           IRepository<Tags> tagsRepo, IRepository<FollowersGraph> followersGraphRepo,
-           IRepository<SubscriptionsPlan> subscriptionPlanRepo,
-           IRepository<UserBillingAddress> userBillingAddressRepo,
-           IRepository<OrderDetails> orderDetailsRepo,
-       IRepository<UserAccountSubscription> accountSubscriptionRepo)
+        public UserService( IUnitOfWork unitOfWork,IRepository<SocialMedia> socialMedia,IRepository<UserManagement> userManagementRepo,
+        IRepository<UserAccountSubscription> accountSubscriptionRepo)
         {
-            _businessCategory = businessCategory;
-            _unitOfWork = unitOfWork;
-            _tagRepo = tagsRepo;
-            _superTargetUserRepo = superTargetUserRepo;
-            _userManagementRepo = userManagementRepo;
-            _conversionRepo = conversionRepo;
-            _activityRepo = activityRepo;
-            _orderDetailsRepo = orderDetailsRepo;
-            _accountSubscriptionRepo = accountSubscriptionRepo;
-            _userBillingAddressRepo = userBillingAddressRepo;
+           
+            _unitOfWork = unitOfWork;     
             _socialMediaRepo = socialMedia;
-            _languageRepo = languages;
-            _subscriptionPlanRepo = subscriptionPlanRepo;
-            _followersGraphRepo = followersGraphRepo;
+  
         }
         #endregion
 
+       
+
         /// <summary>
-        /// get business category
+        /// Get all social account associated with a user.
         /// </summary>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public IEnumerable<BusinessCategory> GetBusinessCategory()
-        {
-            var categories = _businessCategory.Get().ToList();
-            return categories;
+        public IEnumerable<SocialMediaVM> GetUsersAllAccounts(string userId)
+        {       
+            var Accounts = _userManagementRepo.Get().ToList()
+                .Join(_socialMediaRepo.Get().Include(x => x.AccSettings).Where(x => x.IsDeleted == false).ToList(), um => um.AccSettingId, sm => sm.AccSettings.Id, (um, sm) => new { um, sm })
+                .Where(x => x.um.userId == userId)
+                .Select(m => new
+                {
+                    m.sm.Id,
+                    m.sm.SMId,
+                    m.sm.Status,
+                    m.sm.Followers,
+                    m.sm.Provider,
+                    m.sm.UserId,
+                    m.sm.UserName,
+                    m.sm.ProfilepicUrl,
+                    m.sm.IsInvalid
+                }).ToList();
+
+            List<SocialMediaVM> accountList = new List<SocialMediaVM>();
+            foreach (var acc in Accounts)
+            {
+                accountList.Add(new SocialMediaVM { Id = acc.Id, SMId = acc.SMId, Status = acc.Status, Followers = acc.Followers, Provider = acc.Provider, UserId = acc.UserId, UserName = acc.UserName, ProfilepicUrl = acc.ProfilepicUrl, IsInvalid = acc.IsInvalid });
+
+            }
+
+            return accountList;
         }
 
 
+        
     }
 }
