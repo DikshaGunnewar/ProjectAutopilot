@@ -159,6 +159,21 @@ namespace EntitiesLayer.ViewModels
 
     }
 
+    public class ConversionStats
+    {
+        public string label { get; set; }
+        public int count { get; set; }
+        public int total { get; set; }
+
+    }
+
+    public class ConversionCount
+    {
+        public int todayConversion { get; set; }
+        public int weekConversion { get; set; }
+        public int totalConversion { get; set; }
+    }
+
     public class Coordinates
     {
         public double longitude { get; set; }
