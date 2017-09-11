@@ -1,11 +1,16 @@
-﻿using System;
+﻿using EntitiesLayer.Entities;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EntitiesLayer.ViewModels
 {
+    /// <summary>
+    /// vie model added by diksha
+    /// </summary>
     public class viewModel
     {
     }
