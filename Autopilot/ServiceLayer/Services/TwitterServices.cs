@@ -8,8 +8,10 @@ using TweetSharp;
 
 namespace ServiceLayer.Services
 {
-    public class TwitterServices:ITwitterServices
+    public class TwitterServices : ITwitterServices
     {
+
+
         private readonly IRepository<SocialMedia> _socialMediaRepo;
         private readonly IRepository<AccessDetails> _accessDetailRepo;
         private readonly IRepository<SuperTargetUser> _targetUserRepo;
@@ -25,13 +27,13 @@ namespace ServiceLayer.Services
         private readonly string consumerKey;
         private readonly string consumerSecret;
 
-
         public TwitterServices(IRepository<SocialMedia> socialMedia,
            IUnitOfWork unitOfWork,
            IRepository<AccessDetails> accessDetail,
            IRepository<SuperTargetUser> targetUserRepo,
            IRepository<Activities> activityRepo, IUserService userService, IRepository<Tags> tagRepo,
-           IRepository<SuperTargetUser> superTargetUserRepo, IRepository<FollowersGraph> followersGraphRepo)
+           IRepository<SuperTargetUser> superTargetUserRepo, IRepository<FollowersGraph> followersGraphRepo
+           )
         {
             _socialMediaRepo = socialMedia;
             _unitOfWork = unitOfWork;
@@ -44,8 +46,8 @@ namespace ServiceLayer.Services
             _userService = userService;
             consumerKey = ConfigurationSettings.AppSettings["twitterConsumerKey"];
             consumerSecret = ConfigurationSettings.AppSettings["twitterConsumerSecret"];
-
         }
+
 
         /// <summary>
         /// Method to get the uri for authorizing user in Twitter
@@ -56,8 +58,10 @@ namespace ServiceLayer.Services
             try
             {
                 var url = ConfigurationSettings.AppSettings["BaseURL"];
+
                 // Step 1 - Retrieve an OAuth Request Token
                 TwitterService service = new TwitterService(consumerKey, consumerSecret);
+
                 //OAuthAccessToken access = service.GetAccessTokenWithXAuth("", "");
                 // This is the registered callback URL
 
@@ -99,7 +103,6 @@ namespace ServiceLayer.Services
             }
 
         }
-
 
 
 

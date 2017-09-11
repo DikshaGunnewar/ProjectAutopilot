@@ -3,6 +3,7 @@ using Autofac.Integration.WebApi;
 using RepositoryLayer.Infrastructure;
 using RepositoryLayer.Repository;
 using ServiceLayer;
+using ServiceLayer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,18 +31,25 @@ namespace Autopilot
             var config = GlobalConfiguration.Configuration;
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
 
+
             // Register dependencies in controllers
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            builder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>().InstancePerRequest();
+            builder.RegisterType<DbFactory>().As< IDbFactory>().InstancePerRequest();      
+            
+              
+            builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerRequest();
 
-            builder.RegisterType<RepositoryLayer.Repository.AutopilotRepository>().As<IUserRepository>().InstancePerRequest();
-            builder.RegisterGeneric(typeof(RepositoryLayer.Infrastructure.RepositoryBase<>)).As(typeof(IRepositoryBase<>)).InstancePerRequest();
+
+
+
+
             //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
 
-            // Register your repositories all at once using assembly scanning
-            builder.RegisterAssemblyTypes(typeof(RepositoryLayer.Repository.AutopilotRepository).Assembly).Where(t => t.Name.EndsWith("Repository")).AsImplementedInterfaces().InstancePerRequest();
 
-            builder.RegisterAssemblyTypes(typeof(RegisterService).Assembly).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerRequest();
+            // Register your repositories all at once using assembly scanning      
+            builder.RegisterAssemblyTypes(typeof(UserService).Assembly).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerRequest();
+            builder.RegisterAssemblyTypes(typeof(TwitterServices).Assembly).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerRequest();
+
 
             // Register your Web API controllers all at once using assembly scanning
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
