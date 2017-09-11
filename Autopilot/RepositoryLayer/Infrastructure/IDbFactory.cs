@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace RepositoryLayer.Infrastructure
 {
-    public interface IDatabaseFactory : IDisposable
+    public interface IDbFactory : IDisposable
     {
-        AutopilotContext Get();
+        AutopilotContext Init();
     }
 }

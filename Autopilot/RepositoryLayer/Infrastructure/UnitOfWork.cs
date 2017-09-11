@@ -8,19 +8,22 @@ namespace RepositoryLayer.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IDatabaseFactory databaseFactory;
-        private AutopilotContext dataContext;
-        public UnitOfWork(IDatabaseFactory databaseFactory)
+        private readonly IDbFactory dbFactory;
+        private AutopilotContext dbContext;
+
+        public UnitOfWork(IDbFactory dbFactory)
         {
-            this.databaseFactory = databaseFactory;
+            this.dbFactory = dbFactory;
         }
-        protected AutopilotContext DataContext
+
+        public AutopilotContext DbContext
         {
-            get { return dataContext ?? (dataContext = databaseFactory.Get()); }
+            get { return dbContext ?? (dbContext = dbFactory.Init()); }
         }
         public void Commit()
         {
-            DataContext.Commit();
+            DbContext.Commit();
         }
+
     }
 }

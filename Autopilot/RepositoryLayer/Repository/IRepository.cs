@@ -4,16 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RepositoryLayer.Infrastructure
+namespace RepositoryLayer.Repository
 {
-    public interface IRepositoryBase<T> where T : class
+    public interface IRepository<T> where T : class, new()
     {
-
+        IQueryable<T> Get();
         void Add(T entity);
         void Update(T entity);
-        void Delete(T entity);
-        IEnumerable<T> GetAll();
-
-
+        void Remove(T entity);
+        T AddAndReturn(T entity);
     }
 }

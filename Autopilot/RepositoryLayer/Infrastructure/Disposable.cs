@@ -14,6 +14,7 @@ namespace RepositoryLayer.Infrastructure
         {
             Dispose(false);
         }
+
         public void Dispose()
         {
             Dispose(true);
@@ -28,6 +29,8 @@ namespace RepositoryLayer.Infrastructure
 
             isDisposed = true;
         }
+
+        // Ovveride this to dispose custom objects
         protected virtual void DisposeCore()
         {
         }
