@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntitiesLayer.Entities.viewModel
+namespace EntitiesLayer.ViewModels
 {
-    /// <summary>
-    /// view model added by diksha
-    /// </summary>
-    public class viewModels
+    public class viewModel
     {
-
     }
-
 
     public class SocialMediaVM
     {
