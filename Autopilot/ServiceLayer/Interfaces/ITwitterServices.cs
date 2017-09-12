@@ -13,7 +13,9 @@ namespace ServiceLayer.Interfaces
     {
         string Authorize();
         OAuthAccessToken GetTokensOAuth(string oauth_token, string oauth_verifier);
-        //string SaveAccountDeatils(OAuthAccessToken tokens, string userId, string Email);
+        string SaveAccountDeatils(OAuthAccessToken tokens, string userId, string Email);
+
+        TwitterUser GetUserprofile(AccessDetails accessToken);
 
     }
 }

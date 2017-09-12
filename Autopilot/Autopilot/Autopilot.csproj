@@ -274,6 +274,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709121232581_IdentityTables.cs" />
+    <Compile Include="Migrations\201709121232581_IdentityTables.Designer.cs">
+      <DependentUpon>201709121232581_IdentityTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -366,6 +371,11 @@
       <Project>{21F51882-4AF2-4573-BC2B-25A690726C3F}</Project>
       <Name>ServiceLayer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201709121232581_IdentityTables.resx">
+      <DependentUpon>201709121232581_IdentityTables.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

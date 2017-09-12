@@ -16,9 +16,13 @@ using Microsoft.Owin.Security.OAuth;
 using Autopilot.Models;
 using Autopilot.Providers;
 using Autopilot.Results;
+using System.Web.Http.Cors;
 
 namespace Autopilot.Controllers
 {
+
+
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
