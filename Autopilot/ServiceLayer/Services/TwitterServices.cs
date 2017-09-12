@@ -1,4 +1,5 @@
 ﻿using EntitiesLayer.Entities;
+using Newtonsoft.Json.Linq;
 using RepositoryLayer.Infrastructure;
 using RepositoryLayer.Repository;
 using ServiceLayer.EnumStore;
@@ -7,6 +8,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using TweetSharp;
+using System.Linq.Expressions;
 
 namespace ServiceLayer.Services
 {
@@ -100,57 +102,71 @@ namespace ServiceLayer.Services
         /// <param name="userId"></param>
         /// <param name="Email"></param>
         /// <returns></returns>
-        public string SaveAccountDeatils(OAuthAccessToken tokens, string userId, string Email)
-        {
-            try
-            {
-                AccessDetails accessTokens = new AccessDetails() { AccessToken = tokens.Token, AccessTokenSecret = tokens.TokenSecret };
-                var returnMessage = string.Empty;
-                TwitterUser profile = GetUserprofile(accessTokens);
-                var checkAccountIsAvail = _socialMediaRepo.Get().Include(x => x.AccessDetails).Where(x => x.SMId == profile.Id.ToString() && x.IsDeleted == false).FirstOrDefault();
-                if (checkAccountIsAvail == null)
-                {
-                    SocialMedia socialDetails = new SocialMedia()
-                    {
-                        UserId = userId,
-                        Provider = SocialMediaProviders.Twitter.ToString(),
-                        AccessDetails = new AccessDetails { AccessToken = tokens.Token, AccessTokenSecret = tokens.TokenSecret },
-                        ProfilepicUrl = profile.ProfileImageUrlHttps,
-                        Followers = profile.FollowersCount,
-                        SMId = profile.Id.ToString(),
-                        Status = true,
-                        UserName = profile.ScreenName,
-                        AccSettings = new AccSettings()
-                    };
+        //public string SaveAccountDeatils(OAuthAccessToken tokens, string userId, string Email)
+        //{
+        //    try
+        //    {
+        //        AccessDetails accessTokens = new AccessDetails() { AccessToken = tokens.Token, AccessTokenSecret = tokens.TokenSecret };
+        //        var returnMessage = string.Empty;
+        //        TwitterUser profile = GetUserprofile(accessTokens);
+        //        var checkAccountIsAvail = _socialMediaRepo.Get().Include(x => x.AccessDetails).Where(x => x.SMId == profile.Id.ToString() && x.IsDeleted == false).FirstOrDefault();
+        //        if (checkAccountIsAvail == null)
+        //        {
+        //            SocialMedia socialDetails = new SocialMedia()
+        //            {
+        //                UserId = userId,
+        //                Provider = SocialMediaProviders.Twitter.ToString(),
+        //                AccessDetails = new AccessDetails { AccessToken = tokens.Token, AccessTokenSecret = tokens.TokenSecret },
+        //                ProfilepicUrl = profile.ProfileImageUrlHttps,
+        //                Followers = profile.FollowersCount,
+        //                SMId = profile.Id.ToString(),
+        //                Status = true,
+        //                UserName = profile.ScreenName,
+        //                AccSettings = new AccSettings()
+        //            };
 
-                    socialDetails.AccSettings.UserManagement.Add(new UserManagement { Email = Email, userId = userId, Role = "Owner" });
-                    _socialMediaRepo.Add(socialDetails);
-                }
-                else if (checkAccountIsAvail.UserId == userId)
-                {
-                    checkAccountIsAvail.AccessDetails.AccessToken = tokens.Token;
-                    checkAccountIsAvail.AccessDetails.AccessTokenSecret = tokens.TokenSecret;
-                    checkAccountIsAvail.IsInvalid = false;
-                    checkAccountIsAvail.Status = true;
-                    returnMessage = "Already added.";
-                }
-                else
-                {
-                    checkAccountIsAvail.AccessDetails.AccessToken = tokens.Token;
-                    checkAccountIsAvail.AccessDetails.AccessTokenSecret = tokens.TokenSecret;
-                    checkAccountIsAvail.IsInvalid = false;
-                    checkAccountIsAvail.Status = true;
-                    returnMessage = "Cannot add this account, as already added by other user.";
-                }
-                _unitOfWork.Commit();
-                return returnMessage;
-            }
-            catch (Exception)
-            {
+        //            socialDetails.AccSettings.UserManagement.Add(new UserManagement { Email = Email, userId = userId, Role = "Owner" });
+        //            _socialMediaRepo.Add(socialDetails);
+        //        }
+        //        else if (checkAccountIsAvail.UserId == userId)
+        //        {
+        //            checkAccountIsAvail.AccessDetails.AccessToken = tokens.Token;
+        //            checkAccountIsAvail.AccessDetails.AccessTokenSecret = tokens.TokenSecret;
+        //            checkAccountIsAvail.IsInvalid = false;
+        //            checkAccountIsAvail.Status = true;
+        //            returnMessage = "Already added.";
+        //        }
+        //        else
+        //        {
+        //            checkAccountIsAvail.AccessDetails.AccessToken = tokens.Token;
+        //            checkAccountIsAvail.AccessDetails.AccessTokenSecret = tokens.TokenSecret;
+        //            checkAccountIsAvail.IsInvalid = false;
+        //            checkAccountIsAvail.Status = true;
+        //            returnMessage = "Cannot add this account, as already added by other user.";
+        //        }
+        //        _unitOfWork.Commit();
+        //        return returnMessage;
+        //    }
+        //    catch (Exception)
+        //    {
 
-                return "Something went wrong.";
-            }
-        }
+        //        return "Something went wrong.";
+        //    }
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         /// <summary>

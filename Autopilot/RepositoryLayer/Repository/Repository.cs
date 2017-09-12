@@ -11,6 +11,7 @@ namespace RepositoryLayer.Repository
     public class Repository<T> : IRepository<T> where T : class, new()
     {
         #region Initialize
+
         private AutopilotContext dbContext;
 
         protected IDbFactory DbFactory
@@ -27,7 +28,13 @@ namespace RepositoryLayer.Repository
         {
             DbFactory = dbFactory;
         }
+
+
+
         #endregion
+
+
+
 
         /// <summary>
         /// Generic method to get a list
@@ -38,6 +45,8 @@ namespace RepositoryLayer.Repository
             return DbContext.Set<T>();
         }
 
+
+
         /// <summary>
         /// Generic method to get by Id
         /// </summary>
@@ -46,6 +55,8 @@ namespace RepositoryLayer.Repository
         {
             return DbContext.Set<T>();
         }
+
+
 
         /// <summary>
         /// generic method to Add Data
@@ -58,12 +69,17 @@ namespace RepositoryLayer.Repository
 
         }
 
+
+
         public T AddAndReturn(T entity)
         {
 
             return DbContext.Set<T>().Add(entity);
 
         }
+
+
+
         /// <summary>
         /// generic method to Update Data
         /// </summary>
@@ -73,6 +89,9 @@ namespace RepositoryLayer.Repository
 
             DbContext.Entry(entity).State = EntityState.Modified;
         }
+
+
+
         /// <summary>
         /// generic method to  Data
         /// </summary>
