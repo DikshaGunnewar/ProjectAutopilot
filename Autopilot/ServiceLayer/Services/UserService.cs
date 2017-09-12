@@ -15,19 +15,17 @@ namespace ServiceLayer.Services
         #region Initialization
 
         private readonly IRepository<SocialMedia> _socialMediaRepo;     
-        private readonly IRepository<UserAccountSubscription> _accountSubscriptionRepo;
         private readonly IRepository<UserManagement> _userManagementRepo;  
         private readonly IUnitOfWork _unitOfWork;
 
 
-        public UserService( IUnitOfWork unitOfWork,IRepository<SocialMedia> socialMedia,IRepository<UserManagement> userManagementRepo,
-        IRepository<UserAccountSubscription> accountSubscriptionRepo)
-        {
-           
+        public UserService( IUnitOfWork unitOfWork,IRepository<SocialMedia> socialMedia,IRepository<UserManagement> userManagementRepo)
+        {         
             _unitOfWork = unitOfWork;     
             _socialMediaRepo = socialMedia;
   
         }
+
         #endregion
 
        

@@ -16,13 +16,6 @@ namespace ServiceLayer.Services
 
         private readonly IRepository<SocialMedia> _socialMediaRepo;
         private readonly IRepository<AccessDetails> _accessDetailRepo;
-        private readonly IRepository<SuperTargetUser> _targetUserRepo;
-        private readonly IRepository<Activities> _activityRepo;
-        private readonly IRepository<SuperTargetUser> _superTargetUserRepo;
-        private readonly IRepository<FollowersGraph> _followersGraphRepo;
-
-        private readonly IRepository<Tags> _tagRepo;
-
         private readonly IUserService _userService;
 
         private readonly IUnitOfWork _unitOfWork;
@@ -31,21 +24,14 @@ namespace ServiceLayer.Services
 
         public TwitterServices(IRepository<SocialMedia> socialMedia,
            IUnitOfWork unitOfWork,
-           IRepository<AccessDetails> accessDetail,
-           IRepository<SuperTargetUser> targetUserRepo,
-           IRepository<Activities> activityRepo, IUserService userService, IRepository<Tags> tagRepo,
-           IRepository<SuperTargetUser> superTargetUserRepo, IRepository<FollowersGraph> followersGraphRepo
-           )
+           IRepository<AccessDetails> accessDetail,     
+           IUserService userService)
         {
             _socialMediaRepo = socialMedia;
             _unitOfWork = unitOfWork;
-            _targetUserRepo = targetUserRepo;
             _accessDetailRepo = accessDetail;
-            _activityRepo = activityRepo;
-            _superTargetUserRepo = superTargetUserRepo;
-            _tagRepo = tagRepo;
-            _followersGraphRepo = followersGraphRepo;
             _userService = userService;
+
             consumerKey = ConfigurationSettings.AppSettings["twitterConsumerKey"];
             consumerSecret = ConfigurationSettings.AppSettings["twitterConsumerSecret"];
         }
