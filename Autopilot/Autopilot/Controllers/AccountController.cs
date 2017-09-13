@@ -322,7 +322,8 @@ namespace Autopilot.Controllers
             return logins;
         }
 
-        // POST api/Account/Register
+        // POST api/Account/Register Working
+
         [AllowAnonymous]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
