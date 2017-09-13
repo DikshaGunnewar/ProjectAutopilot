@@ -1,4 +1,5 @@
-﻿using EntitiesLayer.ViewModels;
+﻿using EntitiesLayer.Entities;
+using EntitiesLayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,8 @@ namespace ServiceLayer.Interfaces
     {
         string Authorize();
         OAuthTokens GetToken(string Code);
+        string SaveAccountDeatils(OAuthTokens tokens, string userId, string Email);
+        InstaUserList GetUserprofile(AccessDetails Token);
+        bool Logout();
     }
 }

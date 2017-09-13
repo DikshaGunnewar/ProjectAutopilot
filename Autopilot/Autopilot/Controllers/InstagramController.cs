@@ -1,4 +1,5 @@
-﻿using ServiceLayer.Interfaces;
+﻿using Microsoft.AspNet.Identity;
+using ServiceLayer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,22 @@ namespace Autopilot.Controllers
 
 
         /// <summary>
+        /// Redirect to Authenticate
+        /// </summary>
+        /// <returns></returns>
+        public IHttpActionResult Reconnect()
+        {
+            try
+            {
+                return Redirect("InstaAuth");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Method for save account details
         /// </summary>
         /// <param name="code"></param>
@@ -53,9 +70,9 @@ namespace Autopilot.Controllers
             try
             {
                 var tokens = _instagramService.GetToken(code);
-                //var response = _instagramService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);
-                //return RedirectToAction("Dashboard", "Users", new { Message = response });
-                return Ok(tokens);
+                var response = _instagramService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);
+               // return RedirectToAction("Dashboard", "Users", new { Message = response });
+                return Ok(response);
             }
             catch (Exception)
             {
