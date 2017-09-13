@@ -50,11 +50,12 @@ namespace Autopilot.Controllers
         public IHttpActionResult TwitterAuthCallback(string oauth_token, string oauth_verifier)
         {
             var tokens = _twitterService.GetTokensOAuth(oauth_token, oauth_verifier);
-            //var response = _twitterService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);
-            //return RedirectToAction("Dashboard", "Users", new { Message = response });
-            //return Ok(response);
-            return Ok(tokens);
-   
+            var response = _twitterService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);        
+           // return RedirectToRoute("Dashboard",User);        
+            return Ok(response);
+            //return Redirect("http://localhost:4200/dashboard");
+            //return Ok(tokens);
+
         }
 
     }

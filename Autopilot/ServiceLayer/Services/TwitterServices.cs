@@ -98,7 +98,7 @@ namespace ServiceLayer.Services
 
 
         /// <summary>
-        /// Save accounts details like token,followers count & other details
+        /// Save accounts details like token,followers count & other details by diksha
         /// </summary>
 
         public string SaveAccountDeatils(OAuthAccessToken tokens, string userId, string Email)
@@ -154,10 +154,11 @@ namespace ServiceLayer.Services
             }
         }
 
+       
 
 
         /// <summary>
-        /// Get current user profile pic
+        /// Get current user profile pic by diksha
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
