@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace EntitiesLayer.Entities
 {
+    /// <summary>
+    /// changes 13sept
+    /// </summary>
     public class Activities
     {
         public int Id { get; set; }
