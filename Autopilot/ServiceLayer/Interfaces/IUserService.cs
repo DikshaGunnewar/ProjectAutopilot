@@ -5,9 +5,9 @@ namespace ServiceLayer.Interfaces
 {
     public interface IUserService
     {
-      
-        //IEnumerable<SocialMediaVM> GetUsersAllAccounts(string userId);
-      
 
+        //IEnumerable<SocialMediaVM> GetUsersAllAccounts(string userId);
+        //IEnumerable<SocialMediaVM> GetAllAccounts();
+        //UserProfileVM GetUserprofile(string userId);
     }
 }

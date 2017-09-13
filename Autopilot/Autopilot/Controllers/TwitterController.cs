@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using EntitiesLayer.Entities;
+using Microsoft.AspNet.Identity;
 using ServiceLayer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,6 +16,7 @@ namespace Autopilot.Controllers
     public class TwitterController : ApiController
     {
         private readonly ITwitterServices _twitterService;
+
         private readonly IUserService _userService;
 
         public TwitterController(ITwitterServices twitterService, IUserService userService)
@@ -22,8 +25,22 @@ namespace Autopilot.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// trial get data from social media class
+        /// </summary>
+        /// <returns></returns>
+        public IHttpActionResult GetData()
+        {
+
+            return Ok(_twitterService.GetTwitterData());
+
+        }
+
+
+
+
         // GET: /SocialMedia/
-        [HttpGet]
+
         public IHttpActionResult TwitterAuth()
         {
             var URI = _twitterService.Authorize();
@@ -46,16 +63,20 @@ namespace Autopilot.Controllers
             }
         }
 
-        [HttpGet]
+  
         public IHttpActionResult TwitterAuthCallback(string oauth_token, string oauth_verifier)
-        {
+       {
             var tokens = _twitterService.GetTokensOAuth(oauth_token, oauth_verifier);
-            //var response = _twitterService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);
-            //return RedirectToAction("Dashboard", "Users", new { Message = response });
-            //return Ok(response);
-            return Ok(tokens);
-   
+            var response = _twitterService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);
+            //var url = ConfigurationSettings.AppSettings["BaseURL"];
+            //return Redirect(url+ "/api/Users/Dashboard"+response);       
+            return Ok(response);
+            
+            //return Ok(tokens);
+
         }
 
+
+      
     }
 }

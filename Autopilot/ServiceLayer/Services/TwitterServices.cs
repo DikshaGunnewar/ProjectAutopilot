@@ -11,6 +11,7 @@ using TweetSharp;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Data.Entity;
+using EntitiesLayer.ViewModels;
 
 namespace ServiceLayer.Services
 {
@@ -37,9 +38,22 @@ namespace ServiceLayer.Services
             _userService = userService;
 
             consumerKey = ConfigurationSettings.AppSettings["twitterConsumerKey"];
+            //consumerSecret = ConfigurationSettings.AppSettings["twitterConsumerSecret"];
             consumerSecret = ConfigurationSettings.AppSettings["twitterConsumerSecret"];
         }
 
+
+        /// <summary>
+        /// trial method get data from socialmedia class by diksha pending
+        /// </summary>
+        /// <returns></returns>
+        /// 
+
+         public IQueryable<SocialMedia> GetTwitterData()
+        {
+            return _socialMediaRepo.Get();
+        }
+       
 
         /// <summary>
         /// Method to get the uri for authorizing user in Twitter
@@ -98,7 +112,7 @@ namespace ServiceLayer.Services
 
 
         /// <summary>
-        /// Save accounts details like token,followers count & other details
+        /// Save accounts details like token,followers count & other details by diksha
         /// </summary>
 
         public string SaveAccountDeatils(OAuthAccessToken tokens, string userId, string Email)
@@ -154,10 +168,11 @@ namespace ServiceLayer.Services
             }
         }
 
+       
 
 
         /// <summary>
-        /// Get current user profile pic
+        /// Get current user profile pic by diksha
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
@@ -177,6 +192,6 @@ namespace ServiceLayer.Services
             }
         }
 
-
+        
     }
 }
