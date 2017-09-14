@@ -10,9 +10,11 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Autopilot.Providers;
 using Autopilot.Models;
+using System.Web.Http.Cors;
 
 namespace Autopilot
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public partial class Startup
     {
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
