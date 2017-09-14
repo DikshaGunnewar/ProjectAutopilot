@@ -25,22 +25,15 @@ namespace Autopilot.Controllers
             _userService = userService;
         }
 
+
+
+
+
         /// <summary>
-        /// trial get data from social media class
+        /// Get method to Authenticate Social media Twitter by Diksha
         /// </summary>
         /// <returns></returns>
-        public IHttpActionResult GetData()
-        {
-
-            return Ok(_twitterService.GetTwitterData());
-
-        }
-
-
-
-
-        // GET: /SocialMedia/
-
+        [HttpGet]
         public IHttpActionResult TwitterAuth()
         {
             var URI = _twitterService.Authorize();
@@ -63,20 +56,66 @@ namespace Autopilot.Controllers
             }
         }
 
-  
+        /// <summary>
+        /// Twitter callback method to get access token and store in Db by diksha
+        /// </summary>
+        /// <param name="oauth_token"></param>
+        /// <param name="oauth_verifier"></param>
+        /// <returns></returns>
+        [HttpGet]
         public IHttpActionResult TwitterAuthCallback(string oauth_token, string oauth_verifier)
        {
             var tokens = _twitterService.GetTokensOAuth(oauth_token, oauth_verifier);
             var response = _twitterService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);
             //var url = ConfigurationSettings.AppSettings["BaseURL"];
-            //return Redirect(url+ "/api/Users/Dashboard"+response);       
-            return Ok(response);
-            
+            //return Redirect(url+ "/api/Users/GetData"+response);       
+            // return Redirect("http://localhost:4200/dashboard");
+
+             return Ok(response);
+
+
+            //var url = "http://localhost:12952/api/Users/GetData";
+            //System.Uri uri = new System.Uri(url);
+            //return Redirect(uri);
+
             //return Ok(tokens);
 
         }
 
 
-      
+        /// <summary>
+        /// Search User
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="socialId"></param>
+        /// <returns></returns>
+        //public IHttpActionResult SearchUser(string query, int socialId)
+
+        //{
+        //    try
+        //    {
+        //        var _accessToken = _userService.GetTokenForUser(socialId);
+        //        var users = _twitterService.SearchUser(query, _accessToken).ToList();
+        //        return Ok(users);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+
+        //}
+
+        /// <summary>
+        ///Get method to retrive data on browser by diksha
+        /// </summary>
+        /// <returns></returns>
+        //public IHttpActionResult GetData()
+        //{
+
+        //    return Ok(_twitterService.GetTwitterData());
+
+        //}
+
     }
 }
