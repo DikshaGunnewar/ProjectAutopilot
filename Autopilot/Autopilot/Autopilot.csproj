@@ -275,6 +275,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\EmailHelper.cs" />
     <Compile Include="Migrations\201709121232581_IdentityTables.cs" />
     <Compile Include="Migrations\201709121232581_IdentityTables.Designer.cs">
       <DependentUpon>201709121232581_IdentityTables.cs</DependentUpon>

@@ -17,6 +17,8 @@ using Autopilot.Models;
 using Autopilot.Providers;
 using Autopilot.Results;
 using System.Web.Http.Cors;
+using System.Net.Mail;
+using Autopilot.Helper;
 
 namespace Autopilot.Controllers
 {
@@ -336,6 +338,12 @@ namespace Autopilot.Controllers
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            //Email Send to Registered Users
+            var toEmailIds1 = model.Email;
+            string mailBody1 = "Greetings of The Day<br/> Congratulations you have been successfully registered with Socializy.";
+            Attachment attachedfile = null;
+            EmailHelper.SendEmail(toEmailIds1, mailBody1, "Accounts credentials", attachedfile, true);
 
             if (!result.Succeeded)
             {
