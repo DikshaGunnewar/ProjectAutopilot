@@ -44,19 +44,19 @@ namespace ServiceLayer.Services
 
 
         /// <summary>
-        /// trial method get data from socialmedia class by diksha pending
+        /// Get Service Method for Social Media table by diksha
         /// </summary>
         /// <returns></returns>
         /// 
 
-         public IQueryable<SocialMedia> GetTwitterData()
-        {
-            return _socialMediaRepo.Get();
-        }
+        // public IQueryable<SocialMedia> GetTwitterData()
+        //{
+        //    return _socialMediaRepo.Get();
+        //}
        
 
         /// <summary>
-        /// Method to get the uri for authorizing user in Twitter
+        /// Method to get the uri for authorizing user in Twitter by diksha
         /// </summary>
         /// <returns></returns>
         public string Authorize()
@@ -192,6 +192,28 @@ namespace ServiceLayer.Services
             }
         }
 
-        
+
+        /// <summary>
+        /// search tweet
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="_accessToken"></param>
+        /// <returns></returns>
+        public IEnumerable<TwitterUser> SearchUser(string query, AccessDetails _accessToken)
+        {
+            try
+            {
+                TwitterService service = new TwitterService(consumerKey, consumerSecret);
+                service.AuthenticateWith(_accessToken.AccessToken, _accessToken.AccessTokenSecret);
+                var users = service.SearchForUser(new SearchForUserOptions { Q = query, Count = 12 });
+                return users;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
