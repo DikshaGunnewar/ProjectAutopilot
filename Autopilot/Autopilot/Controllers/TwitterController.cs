@@ -66,19 +66,9 @@ namespace Autopilot.Controllers
         public IHttpActionResult TwitterAuthCallback(string oauth_token, string oauth_verifier)
        {
             var tokens = _twitterService.GetTokensOAuth(oauth_token, oauth_verifier);
-            var response = _twitterService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);
-            //var url = ConfigurationSettings.AppSettings["BaseURL"];
-            //return Redirect(url+ "/api/Users/GetData"+response);       
-            // return Redirect("http://localhost:4200/dashboard");
-
-             return Ok(response);
-
-
-            //var url = "http://localhost:12952/api/Users/GetData";
-            //System.Uri uri = new System.Uri(url);
-            //return Redirect(uri);
-
-            //return Ok(tokens);
+            var response = _twitterService.SaveAccountDeatils(tokens, User.Identity.GetUserId(), User.Identity.Name);            
+            return Redirect("http://localhost:4200/dashboard");
+             //return Ok(response);     
 
         }
 
