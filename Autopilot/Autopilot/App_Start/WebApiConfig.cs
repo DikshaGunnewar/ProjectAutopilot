@@ -14,8 +14,13 @@ namespace Autopilot
     {
         public static void Register(HttpConfiguration config)
         {
+
+            //globally registering Cors
+            var cors = new EnableCorsAttribute("http://localhost:4200", "*", "*");
+            config.EnableCors(cors);
+
             // Web API configuration and services by diksha
-              config.EnableCors();
+            //config.EnableCors();
 
 
             // Configure Web API to use only bearer token authentication.
