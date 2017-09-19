@@ -45,6 +45,7 @@ namespace Autopilot
             builder.RegisterType<UserService>().As<IUserService>().InstancePerRequest();
             builder.RegisterType<TwitterServices>().As<ITwitterServices>().InstancePerRequest();
             builder.RegisterType<InstagramService>().As<IInstagramService>().InstancePerRequest();
+            builder.RegisterType<AdminServices>().As<IAdminServices>().InstancePerRequest();
 
 
             // Register your repositories all at once using assembly scanning  by diksha temporary trial 

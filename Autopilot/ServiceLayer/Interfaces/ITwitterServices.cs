@@ -15,8 +15,10 @@ namespace ServiceLayer.Interfaces
         string Authorize();
         OAuthAccessToken GetTokensOAuth(string oauth_token, string oauth_verifier);
         string SaveAccountDeatils(OAuthAccessToken tokens, string userId, string Email);
+        bool UpdateProfile(AccessDetails tokens, int socialId);
         TwitterUser GetUserprofile(AccessDetails accessToken);
         IEnumerable<TwitterUser> SearchUser(string query, AccessDetails _accessToken);
+        bool LikeTweet(long tweetId, AccessDetails _accessToken);
 
     }
 }

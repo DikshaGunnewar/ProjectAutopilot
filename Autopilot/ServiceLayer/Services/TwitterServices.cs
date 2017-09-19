@@ -43,17 +43,7 @@ namespace ServiceLayer.Services
         }
 
 
-        /// <summary>
-        /// Get Service Method for Social Media table by diksha
-        /// </summary>
-        /// <returns></returns>
-        /// 
-
-        // public IQueryable<SocialMedia> GetTwitterData()
-        //{
-        //    return _socialMediaRepo.Get();
-        //}
-       
+     
 
         /// <summary>
         /// Method to get the uri for authorizing user in Twitter by diksha
@@ -194,6 +184,30 @@ namespace ServiceLayer.Services
 
 
         /// <summary>
+        /// Update profile data (Required when algo runs for updated data)
+        /// </summary>
+        /// <param name="tokens"></param>
+        /// <param name="socialId"></param>
+        /// <returns></returns>
+        public bool UpdateProfile(AccessDetails tokens, int socialId)
+        {
+            try
+            {
+                var updatedData = GetUserprofile(tokens);
+                var account = _socialMediaRepo.Get().Where(x => x.Id == socialId).FirstOrDefault();
+                account.Followers = updatedData.FollowersCount;
+                account.ProfilepicUrl = updatedData.ProfileImageUrlHttps;
+                _unitOfWork.Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
+        /// <summary>
         /// search tweet
         /// </summary>
         /// <param name="query"></param>
@@ -214,6 +228,29 @@ namespace ServiceLayer.Services
                 throw;
             }
         }
+
+
+        /// <summary>
+        /// Like a tweet
+        /// </summary>
+        /// <param name="tweetId"></param>
+        /// <param name="_accessToken"></param>
+        /// <returns></returns>
+        public bool LikeTweet(long tweetId, AccessDetails _accessToken)
+        {
+            try
+            {
+                TwitterService service = new TwitterService(consumerKey, consumerSecret);
+                service.AuthenticateWith(_accessToken.AccessToken, _accessToken.AccessTokenSecret);
+                var result = service.FavoriteTweet(new FavoriteTweetOptions { Id = tweetId });
+                return result.IsFavorited;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
 
     }
 }

@@ -67,10 +67,12 @@
   <ItemGroup>
     <Compile Include="EnumStore\EnumStore.cs" />
     <Compile Include="Helper\WebServiceHelper.cs" />
+    <Compile Include="Interfaces\IAdminServices.cs" />
     <Compile Include="Interfaces\IInstagramService.cs" />
     <Compile Include="Interfaces\ITwitterServices.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AdminServices.cs" />
     <Compile Include="Services\InstagramService.cs" />
     <Compile Include="Services\TwitterServices.cs" />
     <Compile Include="Services\UserService.cs" />
