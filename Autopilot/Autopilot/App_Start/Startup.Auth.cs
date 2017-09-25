@@ -15,6 +15,7 @@ using System.Web.Http.Cors;
 namespace Autopilot
 {
    // [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
+
     public partial class Startup
     {
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
@@ -47,6 +48,10 @@ namespace Autopilot
 
             // Enable the application to use bearer tokens to authenticate users
             app.UseOAuthBearerTokens(OAuthOptions);
+
+
+
+
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(

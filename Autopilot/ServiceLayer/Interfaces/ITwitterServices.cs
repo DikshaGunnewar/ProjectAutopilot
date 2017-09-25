@@ -19,6 +19,7 @@ namespace ServiceLayer.Interfaces
         TwitterUser GetUserprofile(AccessDetails accessToken);
         IEnumerable<TwitterUser> SearchUser(string query, AccessDetails _accessToken);
         bool LikeTweet(long tweetId, AccessDetails _accessToken);
-
+        bool AddLocationToTag(int tagId, string location);
+        bool RemoveLocation(int tagId);
     }
 }

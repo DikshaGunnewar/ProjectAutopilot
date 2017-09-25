@@ -23,9 +23,8 @@ using Autopilot.Helper;
 namespace Autopilot.Controllers
 {
 
-
-    //[EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
-    [Authorize]
+   // [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
+    //[Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -327,7 +326,10 @@ namespace Autopilot.Controllers
         // POST api/Account/Register Working
 
         [AllowAnonymous]
+       // [AcceptVerbs("GET", "POST")]
+        [HttpPost]
         [Route("Register")]
+
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -350,10 +352,11 @@ namespace Autopilot.Controllers
                 return GetErrorResult(result);
             }
 
-            return Ok();
+            return Ok(1);
         }
 
         // POST api/Account/RegisterExternal
+   
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("RegisterExternal")]

@@ -67,6 +67,10 @@ namespace Autopilot
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+
+
+
+
         }
     }
 }

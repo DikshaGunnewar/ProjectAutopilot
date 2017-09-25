@@ -10,7 +10,7 @@ using System.Web.Http.Cors;
 
 namespace Autopilot.Controllers
 {
-    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
+    //[EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class InstagramController : ApiController
     {
         private readonly IInstagramService _instagramService;

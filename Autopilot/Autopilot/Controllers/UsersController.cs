@@ -11,7 +11,7 @@ using System.Web.Http.Cors;
 
 namespace Autopilot.Controllers
 {
-
+   //[EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class UsersController : ApiController
     {
         private readonly IUserService _userService;
@@ -37,31 +37,7 @@ namespace Autopilot.Controllers
 
         }
 
-        /// <summary>
-        /// Add Tags
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <param name="socialId"></param>
-        /// <param name="IsBlocked"></param>
-        /// <returns></returns>
-
-        public IHttpActionResult AddBlockTags(string tag, int socialId, bool IsBlocked)
-        {
-            try
-            {
-                var result = _userService.AddBlockTag(tag, socialId, IsBlocked);
-                var tagList = _userService.GetAllTags(socialId);
-                return Ok(new { status = result, tagList = tagList });
-            }
-            catch (Exception)
-            {
-           
-                return Ok(new { status = false });
-
-
-            }
-        }
-
+    
 
         /// <summary>
         /// get tags
@@ -102,6 +78,16 @@ namespace Autopilot.Controllers
                 return Ok(new { status = false });
             }
         }
+
+
+        public IHttpActionResult SideMenu()
+        {
+            var accounts = _userService.GetUsersAllAccounts(User.Identity.GetUserId());
+            return Ok(accounts);
+        }
+
+
+
 
 
     }

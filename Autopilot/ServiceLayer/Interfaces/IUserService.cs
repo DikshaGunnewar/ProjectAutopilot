@@ -12,9 +12,11 @@ namespace ServiceLayer.Interfaces
         bool AddBlockTag(string tag, int socailId, bool IsBlocked);
         bool RemoveTags(int tagId);
         List<TagsVM> GetAllTags(int socailId);
-
+        IEnumerable<SocialMediaVM> GetUsersAllAccounts(string userId);
         SubscriptionsPlan GetASubscriptionPlan(string PlanId);
         List<SubscriptionsPlan> GetAllSubscriptionPlan();
-        
+        void ApplyUserSubscription(UserAccountSubscription accSubscriptionDetails);
+        bool SaveTransactionDetails(PaymentViewModel transactioDetails);
+
     }
 }

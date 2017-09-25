@@ -22,6 +22,7 @@ namespace ServiceLayer.Services
         private readonly IRepository<SocialMedia> _socialMediaRepo;
         private readonly IRepository<AccessDetails> _accessDetailRepo;
         private readonly IUserService _userService;
+        private readonly IRepository<Tags> _tagRepo;
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly string consumerKey;
@@ -29,13 +30,14 @@ namespace ServiceLayer.Services
 
         public TwitterServices(IRepository<SocialMedia> socialMedia,
            IUnitOfWork unitOfWork,
-           IRepository<AccessDetails> accessDetail,     
+           IRepository<AccessDetails> accessDetail, IRepository<Tags> tagRepo,
            IUserService userService)
         {
             _socialMediaRepo = socialMedia;
             _unitOfWork = unitOfWork;
             _accessDetailRepo = accessDetail;
             _userService = userService;
+            _tagRepo = tagRepo;
 
             consumerKey = ConfigurationSettings.AppSettings["twitterConsumerKey"];
             //consumerSecret = ConfigurationSettings.AppSettings["twitterConsumerSecret"];
@@ -252,5 +254,38 @@ namespace ServiceLayer.Services
         }
 
 
+
+
+
+        public bool AddLocationToTag(int tagId, string location)
+        {
+            try
+            {
+                var tag = _tagRepo.Get().Where(x => x.Id == tagId).FirstOrDefault();
+                tag.Location = location;
+                _unitOfWork.Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+        public bool RemoveLocation(int tagId)
+        {
+            try
+            {
+                var tag = _tagRepo.Get().Where(x => x.Id == tagId).FirstOrDefault();
+                tag.Location = null;
+                _unitOfWork.Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

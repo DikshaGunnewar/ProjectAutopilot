@@ -6,6 +6,7 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http.Cors;
+using System.Net.Http.Headers;
 
 namespace Autopilot
 {
@@ -15,12 +16,22 @@ namespace Autopilot
         public static void Register(HttpConfiguration config)
         {
 
-            //globally registering Cors
-            var cors = new EnableCorsAttribute("http://localhost:4200", "*", "*");
+            ////globally registering Cors
+            //var cors = new EnableCorsAttribute("http://localhost:4200", "*", "*");
+
+
+
+            var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
 
+
+            //var cors = new EnableCorsAttribute("*", "*", "*");
+
+
             // Web API configuration and services by diksha
-            //config.EnableCors();
+            // config.EnableCors();
+
+
 
 
             // Configure Web API to use only bearer token authentication.
@@ -35,6 +46,10 @@ namespace Autopilot
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
         }
+
+      
     }
 }

@@ -6,11 +6,12 @@ using Microsoft.Owin;
 using Autopilot.Models;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
+using System.Web.Http.Cors;
 
 namespace Autopilot
 {
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-
+   // [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
@@ -20,6 +21,12 @@ namespace Autopilot
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
+            //added by diksha cors
+
+            // context.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "http://localhost:4200" });
+           // context.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+
+
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
@@ -46,24 +53,7 @@ namespace Autopilot
     }
 
 
-    // Configure the application sign-in manager which is used in this application. by diksha
-    //public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
-    //{
-    //    public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
-    //        : base(userManager, authenticationManager)
-    //    {
-    //    }
-
-    //    public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
-    //    {
-    //        return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
-    //    }
-
-    //    public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
-    //    {
-    //        return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
-    //    }
-    //}
+   
 
 
 

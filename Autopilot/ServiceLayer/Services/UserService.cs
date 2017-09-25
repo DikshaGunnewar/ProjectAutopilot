@@ -18,17 +18,26 @@ namespace ServiceLayer.Services
         private readonly IRepository<SubscriptionsPlan> _subscriptionPlanRepo;
         private readonly IRepository<Tags> _tagRepo;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRepository<UserManagement> _userManagementRepo;
+        private readonly IRepository<OrderDetails> _orderDetailsRepo;
+        private readonly IRepository<UserAccountSubscription> _accountSubscriptionRepo;
+
 
 
         public UserService( IUnitOfWork unitOfWork, 
             IRepository<SocialMedia> socialMedia, 
             IRepository<SubscriptionsPlan> subscriptionPlanRepo,
-            IRepository<Tags> tagsRepo)
+            IRepository<Tags> tagsRepo, IRepository<UserManagement> userManagementRepo,
+            IRepository<OrderDetails> orderDetailsRepo,
+            IRepository<UserAccountSubscription> accountSubscriptionRepo)
         {         
             _unitOfWork = unitOfWork;
             _socialMediaRepo = socialMedia;
             _subscriptionPlanRepo = subscriptionPlanRepo;
             _tagRepo = tagsRepo;
+            _userManagementRepo = userManagementRepo;
+            _orderDetailsRepo = orderDetailsRepo;
+            _accountSubscriptionRepo = accountSubscriptionRepo;
 
 
 
@@ -48,6 +57,48 @@ namespace ServiceLayer.Services
             return _socialMediaRepo.Get();
         }
 
+
+
+
+        /// <summary>
+        /// Get all socail account associated with a user.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public IEnumerable<SocialMediaVM> GetUsersAllAccounts(string userId)
+        {
+            //var accounts = _socialMediaRepo.Get().Where(x => x.UserId == userId).ToList();
+            var accounts = _userManagementRepo.Get().ToList()
+                .Join(_socialMediaRepo.Get().Include(x => x.AccSettings).Where(x => x.IsDeleted == false).ToList(), um => um.AccSettingId, sm => sm.AccSettings.Id, (um, sm) => new { um, sm })
+                .Where(x => x.um.userId == userId)
+                .Select(m => new
+                {
+                    m.sm.Id,
+                    m.sm.SMId,
+                    m.sm.Status,
+                    m.sm.Followers,
+                    m.sm.Provider,
+                    m.sm.UserId,
+                    m.sm.UserName,
+                    m.sm.ProfilepicUrl,
+                    m.sm.IsInvalid
+                }).ToList();
+            List<SocialMediaVM> accountList = new List<SocialMediaVM>();
+            foreach (var acc in accounts)
+            {
+                accountList.Add(new SocialMediaVM { Id = acc.Id, SMId = acc.SMId, Status = acc.Status, Followers = acc.Followers, Provider = acc.Provider, UserId = acc.UserId, UserName = acc.UserName, ProfilepicUrl = acc.ProfilepicUrl, IsInvalid = acc.IsInvalid });
+
+            }
+
+            return accountList;
+        }
+
+
+
+
+
+
+
         /// <summary>
         /// Get Token for User social account
         /// </summary>
@@ -66,9 +117,6 @@ namespace ServiceLayer.Services
                 throw;
             }
         }
-
-
-
 
         /// <summary>
         /// Add/block tags
@@ -105,9 +153,6 @@ namespace ServiceLayer.Services
             }
 
         }
-
-
-
 
         /// <summary>
         /// Remove Tags
@@ -197,6 +242,73 @@ namespace ServiceLayer.Services
             }
         }
 
+      
 
+        /// <summary>
+        /// Save payment/transaction details
+        /// </summary>
+        /// <param name="transactioDetails"></param>
+        /// <returns></returns>
+        public bool SaveTransactionDetails(PaymentViewModel transactioDetails)
+        {
+            try
+            {
+
+                OrderDetails order = new OrderDetails()
+                {
+                    Amount = transactioDetails.Amount,
+                    Date = DateTime.UtcNow,
+                    PaymentMethod = "Paypal",
+                    SubscriptionPlanId = transactioDetails.planId,
+                    TransactionId = transactioDetails.TransactionId,
+                    UserId = transactioDetails.userId,
+                    Status = transactioDetails.Status,
+                    Currency = transactioDetails.Currency,
+                    InvoiceId = transactioDetails.InvoiceId,
+                    SocialId = transactioDetails.socialIds
+                };   //preparing order details object
+                var addedOrder = _orderDetailsRepo.AddAndReturn(order); //add order details
+
+                var pId = Int16.Parse(transactioDetails.planId);
+                var planDetails = _subscriptionPlanRepo.Get().Where(x => x.Id == pId).FirstOrDefault();
+                DateTime planExpiresDate = transactioDetails.Date;
+                if (planDetails.BillingFrequency == "Monthly") { planExpiresDate = transactioDetails.Date.AddDays(30); }
+                else if (planDetails.BillingFrequency == "Yearly") { planExpiresDate = transactioDetails.Date.AddDays(365); }
+                if (transactioDetails.Status.ToLower() == "approved") // transcation is approved/success then apply subscription for user account
+                {
+                    foreach (var item in transactioDetails.socialIds.Split(','))
+                    {
+
+                        ApplyUserSubscription(new UserAccountSubscription { socialIds = item, userId = transactioDetails.userId, ExpiresOn = planExpiresDate, IsTrail = false, PlanId = Int16.Parse(transactioDetails.planId), OrderId = addedOrder.Id.ToString() });
+                    }
+                }
+
+                _unitOfWork.Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+
+            }
+        }
+
+        /// <summary>
+        /// Apply/Add subscription for particular social account
+        /// </summary>
+        /// <param name="accSubscriptionDetails"></param>
+        public void ApplyUserSubscription(UserAccountSubscription accSubscriptionDetails)
+        {
+            try
+            {
+                _accountSubscriptionRepo.Add(accSubscriptionDetails);
+                _unitOfWork.Commit();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ using System.Web.Http.Cors;
 
 namespace Autopilot.Controllers
 {
-   // [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
+   //[EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class TwitterController : ApiController
     {
         private readonly ITwitterServices _twitterService;
@@ -74,38 +74,40 @@ namespace Autopilot.Controllers
 
 
         /// <summary>
-        /// Search User
+        /// Add Location
         /// </summary>
-        /// <param name="query"></param>
-        /// <param name="socialId"></param>
+        /// <param name="tagId"></param>
+        /// <param name="location"></param>
         /// <returns></returns>
-        //public IHttpActionResult SearchUser(string query, int socialId)
+        public IHttpActionResult AddLocation(int tagId, string location)
+        {
+            try
+            {
+                var result = _twitterService.AddLocationToTag(tagId, location);
+                return Ok(new { status = result });
+            }
+            catch (Exception)
+            {
+                return Ok(new { status = false });
+            }
+        }
 
-        //{
-        //    try
-        //    {
-        //        var _accessToken = _userService.GetTokenForUser(socialId);
-        //        var users = _twitterService.SearchUser(query, _accessToken).ToList();
-        //        return Ok(users);
-        //    }
-        //    catch (Exception)
-        //    {
+        public IHttpActionResult RemoveLocation(int tagId)
+        {
+            try
+            {
+                var result = _twitterService.RemoveLocation(tagId);
+                return Ok(new { status = result });
+            }
+            catch (Exception)
+            {
+                return Ok(new { status = false });
 
-        //        throw;
-        //    }
-
-        //}
-
-        /// <summary>
-        ///Get method to retrive data on browser by diksha
-        /// </summary>
-        /// <returns></returns>
-        //public IHttpActionResult GetData()
-        //{
-
-        //    return Ok(_twitterService.GetTwitterData());
-
-        //}
-
+            }
+        }
     }
+
+
+
 }
+

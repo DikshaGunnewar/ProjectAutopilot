@@ -15,7 +15,25 @@ namespace EntitiesLayer.ViewModels
     {
     }
 
-    public class SocialMediaVM
+    public class PaymentViewModel
+    {
+        public string TransactionId { get; set; }
+        public string planId { get; set; }
+        public string userId { get; set; }
+        public string socialIds { get; set; }
+        public string Amount { get; set; }
+        public string Currency { get; set; }
+        public string InvoiceId { get; set; }
+        public string Status { get; set; }
+        [Column(TypeName = "DateTime2")]
+        public DateTime Date { get; set; }
+        public SubscriptionsPlan planDetails { get; set; }
+    }
+
+}
+
+
+public class SocialMediaVM
     {
         public int Id { get; set; }
         public string UserId { get; set; }
@@ -288,4 +306,4 @@ namespace EntitiesLayer.ViewModels
         public string pictureUrl { get; set; }
 
     }
-}
+
